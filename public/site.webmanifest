@@ -1,0 +1,21 @@
+{
+    "name": "Sigma Lang",
+    "short_name": "sigmalang",
+    "description": "Sigma Lang is a programming language that replaces boring programming keywords with modern Gen Z slang. Yap your code, gain aura, and embrace the brainrot.",
+    "icons": [
+        {
+            "src": "/android-chrome-192x192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/android-chrome-512x512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ],
+    "start_url": "/",
+    "theme_color": "#fafafa",
+    "background_color": "#0a0a0a",
+    "display": "standalone"
+}

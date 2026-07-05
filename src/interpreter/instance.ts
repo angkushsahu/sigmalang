@@ -1,0 +1,36 @@
+import type { LiteralValue } from "./type";
+import type { Klass } from "./class";
+import type { Token } from "./token";
+
+import { RuntimeError } from "./error";
+
+export class Instance {
+    private readonly klass: Klass;
+    private readonly fields: Record<string, LiteralValue>;
+
+    constructor(klass: Klass) {
+        this.klass = klass;
+        this.fields = {};
+    }
+
+    get(name: Token) {
+        if (name.lexeme in this.fields) {
+            return this.fields[name.lexeme];
+        }
+
+        const method = this.klass.findMethod(name.lexeme);
+        if (method) {
+            return method.bind(this);
+        }
+
+        throw new RuntimeError(name, `Undefined property '${name.lexeme}'.`);
+    }
+
+    set(name: Token, value: LiteralValue) {
+        this.fields[name.lexeme] = value;
+    }
+
+    toString() {
+        return `${this.klass.name} instance`;
+    }
+}

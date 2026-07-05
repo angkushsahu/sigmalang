@@ -1,0 +1,95 @@
+@import "tailwindcss";
+
+html {
+    scroll-behavior: smooth;
+}
+
+@theme {
+    --color-background: lab(2.75381% 0 0);
+    --color-foreground: lab(98.26% 0 0);
+    --color-muted: lab(66.128% -0.0000298023 0.0000119209);
+    --color-primary: oklab(0.795 0.0126846 0.183562 / 0.8);
+
+    --color-editor-foreground: #bbbebf;
+    --color-editor-background: #121314;
+    --color-editor-border: #1c1c1c;
+
+    --animate-marquee: marquee 20s linear infinite;
+
+    --breakpoint-xs: 25rem;
+}
+
+::selection {
+    background-color: rgba(240, 177, 0, 0.19);
+    color: var(--color-primary);
+}
+
+#editor .cm-scroller {
+    overflow: auto;
+}
+
+#editor .cm-editor {
+    height: 80vh;
+    background-color: var(--color-editor-background);
+    color: var(--color-editor-foreground);
+    border-radius: 12px;
+    border-top-right-radius: 0;
+}
+
+#editor .cm-gutters {
+    border-bottom-left-radius: 0.625rem;
+    border-right-color: var(--color-editor-border);
+}
+
+#editor .cm-focused {
+    outline: none;
+}
+
+#editor .cm-gutters {
+    background-color: #121314;
+}
+
+#editor .cm-activeLineGutter {
+    background-color: #1f1f1f;
+}
+
+#editor .cm-line {
+    font-size: 0.875rem;
+    padding: 0.25rem 0.5rem;
+}
+
+#editor .cm-gutterElement {
+    font-size: 0.875rem;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+}
+
+#editor .cm-line.cm-activeLine {
+    background-color: #242526;
+}
+
+#editor .cm-cursor {
+    border-left-color: #bbbebf;
+    background-color: white;
+}
+
+#editor .cm-layer.cm-selectionLayer>.cm-selectionBackground,
+#editor ::selection {
+    background-color: #024561de !important;
+    color: var(--color-editor-foreground);
+}
+
+.mask-image {
+    mask-image: linear-gradient(to right,
+            rgba(0, 0, 0, 0),
+            rgba(0, 0, 0, 1) 10%,
+            rgba(0, 0, 0, 1) 90%,
+            rgba(0, 0, 0, 0));
+}
+
+@keyframes marquee {
+    to {
+        transform: translateX(calc(-100% - 0.5rem));
+    }
+}
