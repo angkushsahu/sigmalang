@@ -5,7 +5,6 @@ import walterWhiteImg from "../assets/walter-white.webp";
 import skibidyImg from "../assets/skibidy-sigma.webp";
 import patrickImg from "../assets/patrick-bateman.webp";
 
-// todo
 const testimonials = [
     { src: gigaChadImg, name: "Giga Chad" },
     { src: skibidyImg, name: "Skibiddi - The legend" },

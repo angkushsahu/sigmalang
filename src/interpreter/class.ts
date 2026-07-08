@@ -17,7 +17,7 @@ export class Klass implements Callable {
     }
 
     findMethod(name: string): Func | null {
-        if (name in this.methods) {
+        if (Object.hasOwn(this.methods, name)) {
             return this.methods[name];
         }
 
@@ -45,7 +45,7 @@ export class Klass implements Callable {
 
     arity() {
         const initializer = this.findMethod("init");
-        if (!initializer) {
+        if (initializer === null) {
             return 0;
         }
 

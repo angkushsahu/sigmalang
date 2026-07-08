@@ -13,7 +13,7 @@ export class Environment {
     }
 
     get(name: Token): LiteralValue {
-        if (this.values[name.lexeme] !== null && this.values[name.lexeme] !== undefined) {
+        if (Object.hasOwn(this.values, name.lexeme)) {
             return this.values[name.lexeme];
         }
 
@@ -21,11 +21,14 @@ export class Environment {
             return this.enclosing.get(name);
         }
 
-        throw new RuntimeError(name, `Undefined variable '${name.lexeme}'.`);
+        throw new RuntimeError(
+            name,
+            `Bro thought he can use variable '${name.lexeme}' without declaring it first. 💀`
+        );
     }
 
     assign(name: Token, value: LiteralValue) {
-        if (name.lexeme in this.values) {
+        if (Object.hasOwn(this.values, name.lexeme)) {
             this.values[name.lexeme] = value;
             return;
         }
@@ -35,18 +38,20 @@ export class Environment {
             return;
         }
 
-        throw new RuntimeError(name, `Undefined variable '${name.lexeme}'.`);
+        throw new RuntimeError(
+            name,
+            `Bro thought he can use variable '${name.lexeme}' without declaring it first. 💀`
+        );
     }
 
     define(name: string, value: LiteralValue) {
         this.values[name] = value;
     }
 
-    ancestor(distance: number) {
+    ancestor(distance: number): Environment {
         let environment: Environment = this;
 
         for (let i = 0; i < distance; i++) {
-            // todo: can be handled better as per chat gpt
             if (environment.enclosing) {
                 environment = environment.enclosing;
             }
@@ -55,7 +60,7 @@ export class Environment {
         return environment;
     }
 
-    getAt(distance: number, name: string) {
+    getAt(distance: number, name: string): LiteralValue {
         return this.ancestor(distance).values[name];
     }
 

@@ -1,6 +1,5 @@
-import type { Extension } from "@codemirror/state";
-
 import { HighlightStyle, syntaxHighlighting } from "@codemirror/language";
+import type { Extension } from "@codemirror/state";
 import { EditorView } from "@codemirror/view";
 import { tags as t } from "@lezer/highlight";
 
@@ -9,19 +8,21 @@ const chalky = "#e5c07b",
     cyan = "#56b6c2",
     invalid = "#ffffff",
     ivory = "#abb2bf",
-    stone = "#7d8799", // Brightened compared to original to increase contrast
+    stone = "#7d8799",
     malibu = "#61afef",
     sage = "#98c379",
     whiskey = "#d19a66",
     violet = "#c678dd",
     darkBackground = "#21252b",
     highlightBackground = "#2c313a",
-    background = "#282c34",
+    // background = "#282c34",
+    background = "#121314",
     tooltipBackground = "#353a42",
-    selection = "#3E4451",
-    cursor = "#528bff";
+    // selection = "#3E4451",
+    selection = "#272A32",
+    // cursor = "#528bff";
+    cursor = "oklab(0.795 0.0126846 0.183562 / 0.8)";
 
-/// The colors used in the theme, as CSS color strings.
 export const color = {
     chalky,
     coral,
@@ -41,7 +42,6 @@ export const color = {
     cursor
 };
 
-/// The editor theme styles for One Dark.
 export const oneDarkTheme = EditorView.theme(
     {
         "&": {
@@ -114,7 +114,6 @@ export const oneDarkTheme = EditorView.theme(
     { dark: true }
 );
 
-/// The highlighting style for code in the One Dark theme.
 export const oneDarkHighlightStyle = HighlightStyle.define([
     {
         tag: t.keyword,
@@ -201,6 +200,4 @@ export const oneDarkHighlightStyle = HighlightStyle.define([
     }
 ]);
 
-/// Extension to enable the One Dark theme (both the editor theme and
-/// the highlight style).
 export const oneDark: Extension = [oneDarkTheme, syntaxHighlighting(oneDarkHighlightStyle)];

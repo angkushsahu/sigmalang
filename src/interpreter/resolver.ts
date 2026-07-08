@@ -59,10 +59,10 @@ export class Resolver {
                 return this.resolveClassStmt(stmt);
 
             case "Expression":
-                return this.resolveExpressionStmt(stmt);
+                return this.resolveExpr(stmt.expression);
 
             case "Print":
-                return this.resolvePrintStmt(stmt);
+                return this.resolveExpr(stmt.expression);
 
             case "Var":
                 return this.resolveVarStmt(stmt);
@@ -114,7 +114,7 @@ export class Resolver {
                 return this.resolveThisExpr(expr);
 
             case "Unary":
-                return this.resolveUnaryExpr(expr);
+                return this.resolveExpr(expr.right);
 
             case "Variable":
                 return this.resolveVariableExpr(expr);
@@ -135,7 +135,10 @@ export class Resolver {
         this.define(stmt.name);
 
         if (stmt.superClass && stmt.name.lexeme === stmt.superClass.name.lexeme) {
-            this.output.tokenError(stmt.superClass.name, "A class cannot inherit from itself.");
+            this.output.tokenError(
+                stmt.superClass.name,
+                "The class looked in the mirror and said, 'That's my parent.' A class cannot inherit from itself."
+            );
         }
 
         if (stmt.superClass) {
@@ -145,11 +148,15 @@ export class Resolver {
 
         if (stmt.superClass) {
             this.beginScope();
-            this.scopes[this.scopes.length - 1]["super"] = true;
+            if (this.scopes.length >= 1) {
+                this.scopes[this.scopes.length - 1]["super"] = true;
+            }
         }
 
         this.beginScope();
-        this.scopes[this.scopes.length - 1]["this"] = true;
+        if (this.scopes.length >= 1) {
+            this.scopes[this.scopes.length - 1]["this"] = true;
+        }
 
         for (const method of stmt.methods) {
             let declaration: FunctionType = "METHOD";
@@ -170,10 +177,6 @@ export class Resolver {
         this.currentClass = enclosingClass;
     }
 
-    private resolveExpressionStmt(stmt: ExprStmt) {
-        this.resolveExpr(stmt.expression);
-    }
-
     private resolveFuncStmt(stmt: FuncStmt) {
         this.declare(stmt.name);
         this.define(stmt.name);
@@ -190,18 +193,20 @@ export class Resolver {
         }
     }
 
-    private resolvePrintStmt(stmt: PrintStmt) {
-        this.resolveExpr(stmt.expression);
-    }
-
     private resolveReturnStmt(stmt: ReturnStmt) {
         if (this.currentFunction === "NONE") {
-            this.output.tokenError(stmt.keyword, "Cannot return from top-level code.");
+            this.output.tokenError(
+                stmt.keyword,
+                "Return to where? We never left. Cannot return from top-level code."
+            );
         }
 
         if (stmt.value !== null && stmt.value !== undefined) {
             if (this.currentFunction == "INITIALIZER") {
-                this.output.tokenError(stmt.keyword, "Cannot return a value from an initializer.");
+                this.output.tokenError(
+                    stmt.keyword,
+                    "The initializer is not a cashback scheme. Cannot return a value from an initializer."
+                );
             }
 
             this.resolveExpr(stmt.value);
@@ -261,11 +266,14 @@ export class Resolver {
 
     private resolveSuperExpr(expr: SuperExpr) {
         if (this.currentClass === "NONE") {
-            this.output.tokenError(expr.keyword, "Cannot use 'super' outside of a class.");
-        } else if (this.currentClass === "SUBCLASS") {
             this.output.tokenError(
                 expr.keyword,
-                "Cannot use 'super' in a class with no super class"
+                "Bro dialed the family hotline with no family plan. Cannot use 'og' outside of a class."
+            );
+        } else if (this.currentClass !== "SUBCLASS") {
+            this.output.tokenError(
+                expr.keyword,
+                "Bro called 'og' with no family to back him up. Cannot use 'og' outside of a class."
             );
         }
 
@@ -274,15 +282,14 @@ export class Resolver {
 
     private resolveThisExpr(expr: ThisExpr) {
         if (this.currentClass === "NONE") {
-            this.output.tokenError(expr.keyword, "Cannot use 'this' outside of a class.");
+            this.output.tokenError(
+                expr.keyword,
+                "Lil bro is having an identity crisis. Cannot use 'me' outside of a class."
+            );
             return;
         }
 
         this.resolveLocal(expr, expr.keyword);
-    }
-
-    private resolveUnaryExpr(expr: UnaryExpr) {
-        this.resolveExpr(expr.right);
     }
 
     private resolveVariableExpr(expr: VariableExpr) {
@@ -290,7 +297,10 @@ export class Resolver {
             this.scopes.length !== 0 &&
             this.scopes[this.scopes.length - 1][expr.name.lexeme] === false
         ) {
-            this.output.tokenError(expr.name, "Cannot read local variable in its own initializer.");
+            this.output.tokenError(
+                expr.name,
+                "Bro asked the unborn variable for life advice. Cannot read local variable in its own initializer."
+            );
         }
 
         this.resolveLocal(expr, expr.name);
@@ -327,8 +337,11 @@ export class Resolver {
         }
 
         const scope = this.scopes[this.scopes.length - 1];
-        if (scope[name.lexeme]) {
-            this.output.tokenError(name, "Already a variable with this name in this scope.");
+        if (Object.hasOwn(scope, name.lexeme)) {
+            this.output.tokenError(
+                name,
+                "Identity theft isn't a language feature. Already a variable with this name in this scope."
+            );
         }
 
         scope[name.lexeme] = false;
@@ -345,7 +358,7 @@ export class Resolver {
 
     private resolveLocal(expr: Expr, name: Token) {
         for (let i = this.scopes.length - 1; i >= 0; i--) {
-            if (this.scopes[i][name.lexeme]) {
+            if (Object.hasOwn(this.scopes[i], name.lexeme)) {
                 this.interpreter.resolve(expr, this.scopes.length - 1 - i);
                 return;
             }

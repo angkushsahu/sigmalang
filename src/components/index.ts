@@ -1,4 +1,5 @@
 export * from "./editor";
+export * from "./editor-loading";
 export * from "./footer";
 export * from "./header";
 export * from "./hero";

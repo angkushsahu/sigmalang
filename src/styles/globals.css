@@ -21,24 +21,25 @@ html {
 
 ::selection {
     background-color: rgba(240, 177, 0, 0.19);
-    color: var(--color-primary);
 }
 
 #editor .cm-scroller {
     overflow: auto;
 }
 
+#editor input[type="checkbox"] {
+    accent-color: var(--color-primary);
+}
+
 #editor .cm-editor {
     height: 80vh;
-    background-color: var(--color-editor-background);
-    color: var(--color-editor-foreground);
+    /* background-color: var(--color-editor-background); */
     border-radius: 12px;
     border-top-right-radius: 0;
 }
 
 #editor .cm-gutters {
     border-bottom-left-radius: 0.625rem;
-    border-right-color: var(--color-editor-border);
 }
 
 #editor .cm-focused {
@@ -47,10 +48,6 @@ html {
 
 #editor .cm-gutters {
     background-color: #121314;
-}
-
-#editor .cm-activeLineGutter {
-    background-color: #1f1f1f;
 }
 
 #editor .cm-line {
@@ -63,21 +60,6 @@ html {
     display: flex;
     justify-items: center;
     align-items: center;
-}
-
-#editor .cm-line.cm-activeLine {
-    background-color: #242526;
-}
-
-#editor .cm-cursor {
-    border-left-color: #bbbebf;
-    background-color: white;
-}
-
-#editor .cm-layer.cm-selectionLayer>.cm-selectionBackground,
-#editor ::selection {
-    background-color: #024561de !important;
-    color: var(--color-editor-foreground);
 }
 
 .mask-image {

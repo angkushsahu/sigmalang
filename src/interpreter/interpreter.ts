@@ -5,7 +5,6 @@ import type {
     CallExpr,
     ClassStmt,
     Expr,
-    ExprStmt,
     FuncStmt,
     GetExpr,
     IfStmt,
@@ -94,10 +93,10 @@ export class Interpreter {
                 return this.evaluateGet(expr);
 
             case "Variable":
-                return this.evaluateVariable(expr);
+                return this.lookUpVariable(expr.name, expr);
 
             case "This":
-                return this.evaluateThis(expr);
+                return this.lookUpVariable(expr.keyword, expr);
 
             case "Super":
                 return this.evaluateSuper(expr);
@@ -107,7 +106,7 @@ export class Interpreter {
     private execute(stmt: Stmt) {
         switch (stmt.kind) {
             case "Expression":
-                return this.evaluateExpressionStmt(stmt);
+                return this.evaluate(stmt.expression);
 
             case "Print":
                 return this.evaluatePrintStmt(stmt);
@@ -158,12 +157,15 @@ export class Interpreter {
     }
 
     private evaluateClassStmt(stmt: ClassStmt) {
-        let superClass = null;
+        let superClass: LiteralValue = null;
         if (stmt.superClass) {
             superClass = this.evaluate(stmt.superClass);
 
             if (!(superClass instanceof Klass)) {
-                throw new RuntimeError(stmt.superClass.name, "Superclass must be a class.");
+                throw new RuntimeError(
+                    stmt.superClass.name,
+                    "Your superclass is not a class. Certified impostor moment."
+                );
             }
         }
 
@@ -183,16 +185,11 @@ export class Interpreter {
 
         const klass = new Klass(stmt.name.lexeme, methods, superClass);
 
-        // todo, make sure this works
         if (stmt.superClass) {
             this.environment = this.environment.enclosing!;
         }
 
         this.environment.assign(stmt.name, klass);
-    }
-
-    private evaluateExpressionStmt(stmt: ExprStmt) {
-        this.evaluate(stmt.expression);
     }
 
     private evaluateFunctionStmt(stmt: FuncStmt) {
@@ -214,7 +211,7 @@ export class Interpreter {
     }
 
     private evaluateReturnStmt(stmt: ReturnStmt) {
-        let value = null;
+        let value: LiteralValue = null;
         if (stmt.value) {
             value = this.evaluate(stmt.value);
         }
@@ -238,7 +235,7 @@ export class Interpreter {
         }
     }
 
-    private evaluateAssign(expr: AssignExpr) {
+    private evaluateAssign(expr: AssignExpr): LiteralValue {
         const value = this.evaluate(expr.value);
 
         const distance = this.locals.get(expr);
@@ -251,7 +248,7 @@ export class Interpreter {
         return value;
     }
 
-    private evaluateBinary(expr: BinaryExpr) {
+    private evaluateBinary(expr: BinaryExpr): LiteralValue {
         const left = this.evaluate(expr.left);
         const right = this.evaluate(expr.right);
 
@@ -293,7 +290,7 @@ export class Interpreter {
 
                 throw new RuntimeError(
                     expr.operator,
-                    "Operands must be two numbers or two strings."
+                    "Bro made a cursed duo. Operands must both be numbers or both be strings."
                 );
 
             case "SLASH":
@@ -313,13 +310,16 @@ export class Interpreter {
         const args = expr.args.map((arg) => this.evaluate(arg));
 
         if (!this.isCallable(callee)) {
-            throw new RuntimeError(expr.paren, "Can only call functions and classes");
+            throw new RuntimeError(
+                expr.paren,
+                "That ain't callable, chief. Only functions and classes can catch the call."
+            );
         }
 
         if (args.length !== callee.arity()) {
             throw new RuntimeError(
                 expr.paren,
-                `Expected ${callee.arity()} arguments but got ${args.length}.`
+                `Bro pulled up with ${args.length} arguments. This function ordered ${callee.arity()}.`
             );
         }
 
@@ -333,7 +333,7 @@ export class Interpreter {
             return object.get(expr.name);
         }
 
-        throw new RuntimeError(expr.name, "Only instances have properties.");
+        throw new RuntimeError(expr.name, "Property hunt failed. Only instances carry properties.");
     }
 
     private evaluateLogical(expr: LogicalExpr) {
@@ -352,7 +352,10 @@ export class Interpreter {
         const object = this.evaluate(expr.object);
 
         if (!(object instanceof Instance)) {
-            throw new RuntimeError(expr.name, "Only instances have fields.");
+            throw new RuntimeError(
+                expr.name,
+                "Bro expected fields from a non-instance. Reality disagrees."
+            );
         }
 
         const value = this.evaluate(expr.value);
@@ -360,25 +363,23 @@ export class Interpreter {
         return value;
     }
 
-    // todo: this should be returning LiteralValue I guess
-    private evaluateSuper(expr: SuperExpr) {
+    private evaluateSuper(expr: SuperExpr): LiteralValue {
         const distance = this.locals.get(expr)!;
         const superClass = this.environment.getAt(distance, "super") as Klass;
         const object = this.environment.getAt(distance - 1, "this") as Instance;
-        const method = superClass.findMethod(expr.method.lexeme);
+        const method = superClass?.findMethod(expr.method.lexeme);
 
         if (!method) {
-            throw new RuntimeError(expr.method, `Undefined property '${expr.method.lexeme}'.`);
+            throw new RuntimeError(
+                expr.method,
+                `Bro went treasure hunting for ${expr.method.lexeme}. That property doesn't exist.`
+            );
         }
 
         return method.bind(object);
     }
 
-    private evaluateThis(expr: ThisExpr) {
-        return this.lookUpVariable(expr.keyword, expr);
-    }
-
-    private evaluateUnary(expr: UnaryExpr) {
+    private evaluateUnary(expr: UnaryExpr): LiteralValue {
         const right = this.evaluate(expr.right);
 
         switch (expr.operator.type) {
@@ -391,10 +392,6 @@ export class Interpreter {
         }
 
         return null;
-    }
-
-    private evaluateVariable(expr: VariableExpr) {
-        return this.lookUpVariable(expr.name, expr);
     }
 
     private lookUpVariable(name: Token, expr: Expr) {
@@ -411,7 +408,7 @@ export class Interpreter {
             return;
         }
 
-        throw new RuntimeError(operator, "Operand must be a number.");
+        throw new RuntimeError(operator, "Number expected. Bro submitted fan fiction instead.");
     }
 
     private checkNumberOperands(operator: Token, left: LiteralValue, right: LiteralValue) {
@@ -419,7 +416,10 @@ export class Interpreter {
             return;
         }
 
-        throw new RuntimeError(operator, "Operands must be a numbers.");
+        throw new RuntimeError(
+            operator,
+            "This operator only works with numbers. Don't freestyle it."
+        );
     }
 
     private isTruthy(object: LiteralValue) {
@@ -468,7 +468,9 @@ export class Interpreter {
         this.executionSteps += 1;
 
         if (this.executionSteps > LOOP_LIMIT) {
-            this.output.error("Wait wait wait, really bro, that's an infinite loop, ");
+            this.output.error(
+                "Infinite loop detected. This loop has more commitment than your last relationship. Execution stopped."
+            );
             throw new HaltError();
         }
     }

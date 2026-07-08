@@ -4,7 +4,7 @@ import type { LiteralValue } from "./type";
 export class Token {
     readonly type: TokenType;
     readonly lexeme: string;
-    readonly literal: LiteralValue | null;
+    readonly literal: LiteralValue;
     readonly line: number;
 
     constructor(type: TokenType, lexeme: string, literal: LiteralValue, line: number) {

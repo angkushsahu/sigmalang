@@ -1,4 +1,8 @@
+import { lazy, Suspense } from "react";
+
 import * as Component from "./components";
+
+const Editor = lazy(() => import("./components/editor"));
 
 export function App() {
     return (
@@ -14,7 +18,9 @@ export function App() {
 
                 {/* Editor section */}
                 <section id="editor" className="py-5">
-                    <Component.Editor />
+                    <Suspense fallback={<Component.EditorLoading />}>
+                        <Editor />
+                    </Suspense>
                 </section>
 
                 {/* Terminal section */}

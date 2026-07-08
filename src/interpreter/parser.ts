@@ -49,10 +49,12 @@ export class Parser {
 
     private declaration() {
         try {
+            // Gang instead of class
             if (this.match("GANG")) {
                 return this.classDeclaration();
             }
 
+            // Funk instead of function
             if (this.match("FUNK")) {
                 return this.func("function");
             }
@@ -70,22 +72,28 @@ export class Parser {
     }
 
     private classDeclaration(): ClassStmt {
-        const name = this.consume("IDENTIFIER", "Expect class name.");
+        const name = this.consume(
+            "IDENTIFIER",
+            "The gang needs a name, not mystery lore. Identity theft isn't a language feature."
+        );
 
         let superClass: VariableExpr | null = null;
         if (this.match("LESS")) {
-            this.consume("IDENTIFIER", "Expect superclass name.");
+            this.consume("IDENTIFIER", "The family tree has no ancestors. Expected og-class name.");
             superClass = { kind: "Variable", name: this.previous() };
         }
 
-        this.consume("LEFT_BRACE", "Expect '{' before class body.");
+        this.consume(
+            "LEFT_BRACE",
+            "Bro built a house with no front door. Expected '{' before class body."
+        );
 
-        const methods = [];
+        const methods: Array<FuncStmt> = [];
         while (!this.check("RIGHT_BRACE") && !this.isAtEnd()) {
             methods.push(this.func("method"));
         }
 
-        this.consume("RIGHT_BRACE", "Expect '}' after class body.");
+        this.consume("RIGHT_BRACE", "Braces matchmaking failed. '}' never showed up.");
 
         return { kind: "Class", methods, name, superClass };
     }
@@ -104,6 +112,7 @@ export class Parser {
             return this.printStatement();
         }
 
+        // Bounce instead of Return
         if (this.match("BOUNCE")) {
             return this.returnStatement();
         }
@@ -121,7 +130,10 @@ export class Parser {
     }
 
     private forStatement() {
-        this.consume("LEFT_PAREN", "Expect '(' after 'for'.");
+        this.consume(
+            "LEFT_PAREN",
+            "The 'for' is buffering. '(' never loaded. Expected '(' after 'for'."
+        );
 
         let initializer: Stmt | null = null;
         if (this.match("SEMICOLON")) {
@@ -138,14 +150,20 @@ export class Parser {
             condition = this.expression();
         }
 
-        this.consume("SEMICOLON", "Expect ';' after loop condition.");
+        this.consume(
+            "SEMICOLON",
+            "Lil bro thinks semicolons are optional. It's not Python bro. Expected ';' after loop condition."
+        );
 
         let increment: Expr | null = null;
         if (!this.check("RIGHT_PAREN")) {
             increment = this.expression();
         }
 
-        this.consume("RIGHT_PAREN", "Expect ')' after for clauses.");
+        this.consume(
+            "RIGHT_PAREN",
+            "The 'for' loop portal is still wide open. Expected ')' after for clauses."
+        );
 
         let body = this.statement();
 
@@ -156,7 +174,7 @@ export class Parser {
             };
         }
 
-        if (!condition) {
+        if (condition === null) {
             condition = { kind: "Literal", value: true } as LiteralExpr;
         }
 
@@ -170,9 +188,15 @@ export class Parser {
     }
 
     private ifStatement(): IfStmt {
-        this.consume("LEFT_PAREN", "Expect '(' after 'if'.");
+        this.consume(
+            "LEFT_PAREN",
+            "The 'if' is waiting for its opening bracket arc. Expected '(' after 'if'."
+        );
         const condition = this.expression();
-        this.consume("RIGHT_PAREN", "Expect ')' after if condition.");
+        this.consume(
+            "RIGHT_PAREN",
+            "The 'if' condition is trapped. ')' never came back with the milk. Expected ')' after if condition."
+        );
 
         const thenBranch = this.statement();
         let elseBranch: Stmt | null = null;
@@ -186,7 +210,10 @@ export class Parser {
 
     private printStatement(): PrintStmt {
         const value = this.expression();
-        this.consume("SEMICOLON", "Expect ';' after value.");
+        this.consume(
+            "SEMICOLON",
+            "Lil bro thinks statements end with vibes. This ain't Python bro. Expected ';' after value."
+        );
         return { kind: "Print", expression: value };
     }
 
@@ -198,27 +225,42 @@ export class Parser {
             value = this.expression();
         }
 
-        this.consume("SEMICOLON", "Expect ';' after return value.");
+        this.consume(
+            "SEMICOLON",
+            "This ain't Python bro, please have some respect. Expected ';' after return value."
+        );
         return { kind: "Return", keyword, value };
     }
 
     private varDeclaration(): VarStmt {
-        const name = this.consume("IDENTIFIER", "Expect variable name.");
+        const name = this.consume(
+            "IDENTIFIER",
+            "Lil bro declared a variable in incognito mode. Expected variable name."
+        );
 
         let initializer: Expr | null = null;
         if (this.match("EQUAL")) {
             initializer = this.expression();
         }
 
-        this.consume("SEMICOLON", "Expect ';' after variable declaration");
+        this.consume(
+            "SEMICOLON",
+            "This ain't Python bro, please have some respect. Expect ';' after variable declaration"
+        );
         return { kind: "Var", name, initializer };
     }
 
     private whileStatement(): WhileStmt {
-        this.consume("LEFT_PAREN", "Expect '(' after 'while'.");
+        this.consume(
+            "LEFT_PAREN",
+            "Bro said 'while' and expected the compiler to fill in the lore. Expected '(' after 'while'."
+        );
         const condition = this.expression();
 
-        this.consume("RIGHT_PAREN", "Expect ')' after condition.");
+        this.consume(
+            "RIGHT_PAREN",
+            "The condition escaped containment. ')' never caught it. Expected ')' after condition."
+        );
         const body = this.statement();
 
         return { kind: "While", condition, body };
@@ -226,31 +268,52 @@ export class Parser {
 
     private expressionStatement(): ExprStmt {
         const expr = this.expression();
-        this.consume("SEMICOLON", "Expect ';' after expression.");
+        this.consume(
+            "SEMICOLON",
+            "This ain't Python bro, please have some respect. Expected ';' after expression."
+        );
         return { kind: "Expression", expression: expr };
     }
 
     private func(kind: string): FuncStmt {
-        const name = this.consume("IDENTIFIER", `Expect ${kind} name.`);
-        this.consume("LEFT_PAREN", `Expect '(' after ${kind} name.`);
+        const name = this.consume(
+            "IDENTIFIER",
+            `Please name '${kind}' something. You don't have to be creative.`
+        );
+        this.consume(
+            "LEFT_PAREN",
+            `Bro thinks the parameter list is optional DLC. Expected '(' after ${kind} name.`
+        );
 
-        const parameters: Array<Token> = [];
+        const params: Array<Token> = [];
 
         if (!this.check("RIGHT_PAREN")) {
             do {
-                if (parameters.length >= 255) {
-                    this.error(this.peek(), "Cannot have more than 255 parameters.");
+                if (params.length >= 255) {
+                    this.error(
+                        this.peek(),
+                        "Bro is hosting the Avengers in one function call. Cannot have more than 255 arguments."
+                    );
                 }
 
-                parameters.push(this.consume("IDENTIFIER", "Expect parameter name."));
+                params.push(
+                    this.consume(
+                        "IDENTIFIER",
+                        "Bro invited a parameter and forgot its name. Expected parameter name."
+                    )
+                );
             } while (this.match("COMMA"));
         }
 
-        this.consume("RIGHT_PAREN", "Expect ')' after parameters.");
-        this.consume("LEFT_BRACE", `Expect '{' before ${kind} body.`);
+        this.consume(
+            "RIGHT_PAREN",
+            "The parameters are still in the group chat. ')' never ended the meeting. Expected ')' after parameters."
+        );
+
+        this.consume("LEFT_BRACE", `Expect '{' before ${kind} body. Stop being NPC dude.`);
 
         const body = this.block();
-        return { kind: "Function", body, name, params: parameters };
+        return { kind: "Function", body, name, params };
     }
 
     private block() {
@@ -263,7 +326,11 @@ export class Parser {
             }
         }
 
-        this.consume("RIGHT_BRACE", "Expect '}' after block.");
+        this.consume(
+            "RIGHT_BRACE",
+            "The '{' is still waiting for its beloved. Expected '}' after block."
+        );
+
         return statements;
     }
 
@@ -278,11 +345,13 @@ export class Parser {
                 const name = expr.name;
                 return { kind: "Assign", name, value };
             } else if (expr.kind === "Get") {
-                const get = expr;
-                return { kind: "Set", object: get.object, name: get.name, value };
+                return { kind: "Set", object: expr.object, name: expr.name, value };
             }
 
-            this.error(equals, "Invalid assignment target.");
+            this.error(
+                equals,
+                "Bro tried assigning to something that ain't assignable. Invalid assignment target."
+            );
         }
 
         return expr;
@@ -313,7 +382,7 @@ export class Parser {
     }
 
     private equality() {
-        let expr: Expr = this.comparison();
+        let expr = this.comparison();
 
         while (this.match("BANG_EQUAL", "EQUAL_EQUAL")) {
             const operator = this.previous();
@@ -326,7 +395,7 @@ export class Parser {
     }
 
     private comparison() {
-        let expr: Expr = this.term();
+        let expr = this.term();
 
         while (this.match("GREATER", "GREATER_EQUAL", "LESS", "LESS_EQUAL")) {
             const operator = this.previous();
@@ -338,7 +407,7 @@ export class Parser {
     }
 
     private term() {
-        let expr: Expr = this.factor();
+        let expr = this.factor();
 
         while (this.match("MINUS", "PLUS")) {
             const operator = this.previous();
@@ -350,7 +419,7 @@ export class Parser {
     }
 
     private factor() {
-        let expr: Expr = this.unary();
+        let expr = this.unary();
 
         while (this.match("SLASH", "STAR")) {
             const operator = this.previous();
@@ -376,14 +445,20 @@ export class Parser {
         if (!this.check("RIGHT_PAREN")) {
             do {
                 if (args.length >= 255) {
-                    this.error(this.peek(), "Cannot have more than 255 arguments.");
+                    this.error(
+                        this.peek(),
+                        "Bro is hosting the Avengers in one function call. Cannot have more than 255 arguments."
+                    );
                 }
 
                 args.push(this.expression());
             } while (this.match("COMMA"));
         }
 
-        const paren = this.consume("RIGHT_PAREN", "Expect ')' after arguments.");
+        const paren = this.consume(
+            "RIGHT_PAREN",
+            "The function call is still taking attendance. ')' never showed up. Expected ')' after arguments."
+        );
 
         return { kind: "Call", callee, paren, args };
     }
@@ -395,7 +470,10 @@ export class Parser {
             if (this.match("LEFT_PAREN")) {
                 expr = this.finishCall(expr);
             } else if (this.match("DOT")) {
-                const name = this.consume("IDENTIFIER", "Expect property name after '.'.");
+                const name = this.consume(
+                    "IDENTIFIER",
+                    "The '.' is looking for its soulmate: a property name."
+                );
                 expr = { kind: "Get", name, object: expr };
             } else {
                 break;
@@ -414,6 +492,7 @@ export class Parser {
         if (this.match("FAX")) {
             return { kind: "Literal", value: true };
         }
+        // Npc instead of Nil
         if (this.match("NPC")) {
             return { kind: "Literal", value: null };
         }
@@ -424,8 +503,11 @@ export class Parser {
 
         if (this.match("OG")) {
             const keyword = this.previous();
-            this.consume("DOT", "Expect '.' after 'super'.");
-            const method = this.consume("IDENTIFIER", "Expect superclass method name.");
+            this.consume("DOT", "Bro typed 'og' and called it a day. Expected '.'");
+            const method = this.consume(
+                "IDENTIFIER",
+                "Brain.exe stopped. Expected a og-class method name."
+            );
             return { kind: "Super", keyword, method };
         }
 
@@ -439,11 +521,11 @@ export class Parser {
 
         if (this.match("LEFT_PAREN")) {
             const expr = this.expression();
-            this.consume("RIGHT_PAREN", "Expect ')' after expression.");
+            this.consume("RIGHT_PAREN", "Parenthesis matchmaking failed. ')' never showed up.");
             return { kind: "Grouping", expression: expr };
         }
 
-        throw this.error(this.peek(), "Expect expression.");
+        throw this.error(this.peek(), "Skibidi syntax detected. Expected an expression.");
     }
 
     private match(...types: Array<TokenType>) {
@@ -506,17 +588,14 @@ export class Parser {
             }
 
             switch (this.peek().type) {
-                case "GANG":
-                case "FUNK":
-                // case "VAR":
-                case "AURA":
+                case "GANG": // "class"
+                case "FUNK": // "function"
+                case "AURA": // var
                 case "FOR":
                 case "IF":
-                // case "WHILE":
-                case "SPAM":
-                // case "PRINT":
-                case "YAP":
-                case "BOUNCE":
+                case "SPAM": // while
+                case "YAP": // print
+                case "BOUNCE": // return
                     return;
             }
 

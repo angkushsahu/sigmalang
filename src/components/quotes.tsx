@@ -43,7 +43,6 @@ export function Quotes() {
                 A few sigma quotes
             </h2>
 
-            {/* <div className="flex flex-wrap gap-4"> */}
             <div className="flex flex-wrap gap-4">
                 {quotes.map((quote, index) => (
                     <div

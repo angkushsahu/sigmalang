@@ -14,7 +14,7 @@ export class Instance {
     }
 
     get(name: Token) {
-        if (name.lexeme in this.fields) {
+        if (Object.hasOwn(this.fields, name.lexeme)) {
             return this.fields[name.lexeme];
         }
 
@@ -23,7 +23,7 @@ export class Instance {
             return method.bind(this);
         }
 
-        throw new RuntimeError(name, `Undefined property '${name.lexeme}'.`);
+        throw new RuntimeError(name, `The object has no clue who '${name.lexeme}' is.`);
     }
 
     set(name: Token, value: LiteralValue) {

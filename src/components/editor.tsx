@@ -1,6 +1,7 @@
 import { EditorView, keymap } from "@codemirror/view";
 import { indentWithTab } from "@codemirror/commands";
 import { EditorState } from "@codemirror/state";
+import { lintGutter } from "@codemirror/lint";
 import { basicSetup } from "codemirror";
 
 import { useEffect, useRef, useState } from "react";
@@ -18,7 +19,7 @@ funk fibb() {
 aura a = fibb();
 yap a;`;
 
-export function Editor() {
+export default function Editor() {
     const editorRef = useRef<HTMLDivElement>(null);
     const { runCode } = useOutputContext();
     const [content, setContent] = useState(INITIAL_STATE);
@@ -34,6 +35,7 @@ export function Editor() {
                 doc: INITIAL_STATE,
                 extensions: [
                     basicSetup,
+                    lintGutter(),
                     keymap.of([indentWithTab]), // tab control
                     EditorView.lineWrapping,
                     SigmaLangEditorSupport(),

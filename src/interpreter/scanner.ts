@@ -92,9 +92,9 @@ export class Scanner {
                 this.addToken(this.match("=") ? "GREATER_EQUAL" : "GREATER", null);
                 break;
 
-            case "/": {
+            case "/":
                 if (this.match("/")) {
-                    while (this.peek() != "\n" && !this.isAtEnd()) {
+                    while (this.peek() !== "\n" && !this.isAtEnd()) {
                         this.advance();
                     }
                 } else {
@@ -102,7 +102,7 @@ export class Scanner {
                 }
 
                 break;
-            }
+
             case " ":
             case "\r":
             case "\t":
@@ -123,7 +123,6 @@ export class Scanner {
                     this.identifier();
                 } else {
                     this.output.reportError(this.line, "", "Unexpected character.");
-                    break;
                 }
                 break;
         }
@@ -161,7 +160,7 @@ export class Scanner {
     }
 
     private string() {
-        while (this.peek() != '"' && !this.isAtEnd()) {
+        while (this.peek() !== '"' && !this.isAtEnd()) {
             if (this.peek() === "\n") {
                 this.line += 1;
             }
@@ -183,7 +182,7 @@ export class Scanner {
         if (this.isAtEnd()) {
             return false;
         }
-        if (this.source.charAt(this.current) != expected) {
+        if (this.source.charAt(this.current) !== expected) {
             return false;
         }
 

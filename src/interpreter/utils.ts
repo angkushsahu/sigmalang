@@ -2,7 +2,7 @@ import type { LiteralValue } from "./type";
 import type { Callable } from "./callable";
 
 export class Clock implements Callable {
-    arity() {
+    arity(): number {
         return 0;
     }
 
@@ -10,7 +10,7 @@ export class Clock implements Callable {
         return Date.now() / 1000;
     }
 
-    toString() {
+    toString(): string {
         return "<native fn>";
     }
 }
