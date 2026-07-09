@@ -21,7 +21,6 @@ export function Strings() {
                     <span style={{ color: color.stone }}>// Prints 👉🏼 Skibidi Sigma Rizzler</span>
                 </p>
             </div>
-            {/* todo: add more content here */}
             <p className="text-muted mt-4 text-sm">
                 Strings are just text.{" "}
                 <em>

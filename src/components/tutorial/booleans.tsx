@@ -33,8 +33,7 @@ export function Booleans() {
                 </p>
                 <p>
                     <span style={{ color: color.violet }}>&nbsp;&nbsp;&nbsp;&nbsp;yap </span>
-                    {/* todo, add congratulations emoji here */}
-                    <span style={{ color: color.sage }}>"You are a sigma, congratulations"</span>
+                    <span style={{ color: color.sage }}>"You are a sigma, congratulations 😎"</span>
                     <span>;</span>
                 </p>
                 <p>
@@ -47,8 +46,7 @@ export function Booleans() {
                 </p>
                 <p>
                     <span style={{ color: color.violet }}>&nbsp;&nbsp;&nbsp;&nbsp;yap </span>
-                    {/* todo, add congratulations emoji here */}
-                    <span style={{ color: color.sage }}>"You are at least an alpha, yay"</span>
+                    <span style={{ color: color.sage }}>"You are at least an alpha, yay 👏"</span>
                     <span>;</span>
                 </p>
                 <p>
@@ -87,16 +85,18 @@ export function Booleans() {
 
                 <div style={{ color: color.stone }}>
                     <p>// Prints 👇🏼</p>
-                    {/* todo, add congratulations emoji here */}
-                    <p>You are a sigma, congratulations</p>
+                    <p>You are a sigma, congratulations 😎</p>
                     <p>false</p>
                 </div>
             </div>
 
-            {/* todo, add proper message */}
             <p className="text-muted mt-4 text-sm">
-                if statements let your program make decisions.{" "}
-                <em>Unlike that one friend who pushes directly to main</em> 🤬.
+                The most decisive data type ever.{" "}
+                <em>
+                    It's either <strong>fax (true)</strong> or <strong>cap (false)</strong>. No
+                    in-between. Anything else is overthinking
+                </em>{" "}
+                🤔.
             </p>
         </div>
     );
