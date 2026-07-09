@@ -25,9 +25,8 @@ export function Strings() {
                 Strings are just text.{" "}
                 <em>
                     Fancy programmer term for "a bunch of letters that refused to be numbers." If
-                    it's wrapped in quotes, Sigma treats it like gossip instead of math
-                </em>{" "}
-                ðŸ—£ï.
+                    it's wrapped in quotes, Sigma treats it like gossip instead of math.
+                </em>
             </p>
         </div>
     );
