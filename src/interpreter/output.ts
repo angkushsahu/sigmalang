@@ -5,11 +5,9 @@ export type OutputEntry = { type: "stdout"; text: string } | { type: "stderr"; t
 
 export class RuntimeOutput {
     private entries: Array<OutputEntry>;
-    errorCount: number;
 
     constructor() {
         this.entries = [];
-        this.errorCount = 0;
     }
 
     print(text: string) {
@@ -17,18 +15,14 @@ export class RuntimeOutput {
     }
 
     error(text: string) {
-        this.errorCount += 1;
         this.entries.push({ type: "stderr", text });
     }
 
     runtimeError(error: RuntimeError) {
-        this.errorCount += 1;
         this.entries.push({ type: "stderr", text: `[line ${error.token.line}] ${error.message}` });
     }
 
     tokenError(token: Token, message: string) {
-        this.errorCount += 1;
-
         if (token.type === "EOF") {
             this.reportError(token.line, "at end", message);
         } else {

@@ -5,19 +5,16 @@ import type {
     CallExpr,
     ClassStmt,
     Expr,
-    ExprStmt,
     FuncStmt,
     GetExpr,
     GroupingExpr,
     IfStmt,
     LogicalExpr,
-    PrintStmt,
     ReturnStmt,
     SetExpr,
     Stmt,
     SuperExpr,
     ThisExpr,
-    UnaryExpr,
     VariableExpr,
     VarStmt,
     WhileStmt
@@ -81,7 +78,7 @@ export class Resolver {
         }
     }
 
-    private resolveExpr(expr: Expr) {
+    private resolveExpr(expr: Expr): void {
         switch (expr.kind) {
             case "Assign":
                 return this.resolveAssignExpr(expr);
@@ -99,7 +96,7 @@ export class Resolver {
                 return this.resolveGroupingExpr(expr);
 
             case "Literal":
-                return null;
+                return;
 
             case "Logical":
                 return this.resolveLogicalExpr(expr);

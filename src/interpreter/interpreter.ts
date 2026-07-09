@@ -15,9 +15,7 @@ import type {
     SetExpr,
     Stmt,
     SuperExpr,
-    ThisExpr,
     UnaryExpr,
-    VariableExpr,
     VarStmt,
     WhileStmt
 } from "./type";
@@ -300,6 +298,10 @@ export class Interpreter {
             case "STAR":
                 this.checkNumberOperands(expr.operator, left, right);
                 return Number(left) * Number(right);
+
+            case "MOD":
+                this.checkNumberOperands(expr.operator, left, right);
+                return Number(left) % Number(right);
         }
 
         return null;

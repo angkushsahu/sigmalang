@@ -9,7 +9,8 @@ const SingleCharTokens = [
     "PLUS",
     "SEMICOLON",
     "SLASH",
-    "STAR"
+    "STAR",
+    "MOD"
 ] as const;
 
 const OneOrTwoCharTokens = [

@@ -76,6 +76,10 @@ export class Scanner {
                 this.addToken("STAR", null);
                 break;
 
+            case "%":
+                this.addToken("MOD", null);
+                break;
+
             case "!":
                 this.addToken(this.match("=") ? "BANG_EQUAL" : "BANG", null);
                 break;

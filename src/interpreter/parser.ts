@@ -421,7 +421,7 @@ export class Parser {
     private factor() {
         let expr = this.unary();
 
-        while (this.match("SLASH", "STAR")) {
+        while (this.match("SLASH", "STAR", "MOD")) {
             const operator = this.previous();
             const right = this.unary();
             expr = { kind: "Binary", left: expr, operator, right };
