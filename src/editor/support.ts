@@ -63,7 +63,8 @@ export const SigmaLang = LRLanguage.define({
     }),
 
     languageData: {
-        commentTokens: { line: "//", autocomplete: sigmaLangCompletion }
+        commentTokens: { line: "//" },
+        autocomplete: sigmaLangCompletion
     }
 });
 
