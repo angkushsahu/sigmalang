@@ -1,8 +1,11 @@
+import { Booleans } from "./booleans";
 import { Classes } from "./classes";
 import { Conditions } from "./conditions";
 import { Functions } from "./functions";
 import { HelloWorld } from "./hello-world";
+import { Keywords } from "./keywords";
 import { Loops } from "./loops";
+import { Operators } from "./operators";
 import { Recursion } from "./recursion";
 import { RunningCode } from "./running-code";
 import { Strings } from "./strings";
@@ -22,10 +25,13 @@ export function Tutorial() {
                 <Variables />
                 <Strings />
                 <Conditions />
+                <Booleans />
                 <Functions />
                 <Loops />
                 <Classes />
                 <Recursion />
+                <Operators />
+                <Keywords />
             </div>
         </div>
     );

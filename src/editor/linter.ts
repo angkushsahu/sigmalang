@@ -14,7 +14,7 @@ export const sigmaLangLinter = linter(function (view) {
                 from: node.from,
                 to: node.to > node.from ? node.to : Math.min(node.from + 1, view.state.doc.length),
                 severity: "error",
-                message: "Syntax error: unexpected or missing token here."
+                message: "Syntax error: Unexpected or missing token here."
             });
         }
     });

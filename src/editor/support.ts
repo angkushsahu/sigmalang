@@ -8,6 +8,7 @@ import {
 } from "@codemirror/language";
 import { styleTags, tags as t } from "@lezer/highlight";
 
+import { sigmaLangCompletion } from "./auto-complete";
 import { sigmaLangLinter } from "./linter";
 import { parser } from "./parser";
 
@@ -62,7 +63,7 @@ export const SigmaLang = LRLanguage.define({
     }),
 
     languageData: {
-        commentTokens: { line: "//" }
+        commentTokens: { line: "//", autocomplete: sigmaLangCompletion }
     }
 });
 

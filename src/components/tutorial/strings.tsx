@@ -21,7 +21,15 @@ export function Strings() {
                     <span style={{ color: color.stone }}>// Prints 👉🏼 Skibidi Sigma Rizzler</span>
                 </p>
             </div>
-            <p className="text-muted mt-4 text-sm">Strings are just text.</p>
+            {/* todo: add more content here */}
+            <p className="text-muted mt-4 text-sm">
+                Strings are just text.{" "}
+                <em>
+                    Fancy programmer term for "a bunch of letters that refused to be numbers." If
+                    it's wrapped in quotes, Sigma treats it like gossip instead of math
+                </em>{" "}
+                🗣�.
+            </p>
         </div>
     );
 }
