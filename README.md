@@ -11,15 +11,21 @@ Why write `print "Hello, world!"` when you can write `yap "Hello, world!"`. Prog
 ## ✨ Features (better not to talk about them)
 
 I'd tell you about the features...
+
 ...but then I'd have to fix them.
 
 **Here are a few:**
 
 🧠 Brainrot-inspired syntax
+
 ⚡ Tree-walk interpreter written in TypeScript
+
 🖥️ In-browser playground
+
 🎨 Syntax highlighting
+
 💡 Autocomplete
+
 👴 Classes, Inheritance and some other stuff I am trying to remember 🤔.
 
 ## Why you ask? 🤷‍♂️
