@@ -115,7 +115,7 @@ BinaryExpr {
 
 EqOp { "==" | "!=" }
 
-MulOp { "*" | "/" }
+MulOp { "*" | "/" | "%" }
 
 LogicExpr {
   expression !and kw<"and"> expression |
@@ -167,7 +167,7 @@ kw<term> { @specialize[@name={term}]<identifier, term> }
 
   whitespace { $[ \t\r\n]+ }
 
-  "(" ")" "{" "}" "," "." "-" "+" ";" "/" "*"
+  "(" ")" "{" "}" "," "." "-" "+" ";" "/" "*" "%"
   "!" "!=" "=" "==" ">" ">=" "<" "<="
 
   @precedence { LineComment, "/" }

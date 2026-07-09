@@ -8,7 +8,7 @@
         "build": "tsc -b && vite build",
         "lint": "eslint .",
         "preview": "vite preview",
-        "build-parser": "bunx lezer-generator ./src/utils/syntax.grammar -o ./src/utils/parser.ts"
+        "build-parser": "bunx lezer-generator ./src/editor/syntax.grammar -o ./src/editor/parser.ts"
     },
     "dependencies": {
         "@codemirror/commands": "^6.10.4",
