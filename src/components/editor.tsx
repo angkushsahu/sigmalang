@@ -10,8 +10,7 @@ import { PlayIcon, SigmaIcon } from "lucide-react";
 import { oneDark, SigmaLangEditorSupport } from "../editor";
 import { useAppContext } from "../context";
 
-const INITIAL_STATE = `aura abc = 10;
-yap abc;`;
+const INITIAL_STATE = 'yap "Hello, world!";';
 
 export default function Editor() {
     const editorRef = useRef<HTMLDivElement>(null);
