@@ -23,6 +23,9 @@ export function App() {
                     </Suspense>
                 </section>
 
+                {/* Aura-meter section */}
+                <Component.AuraMeter />
+
                 {/* Terminal section */}
                 <section id="terminal" className="py-5">
                     <Component.Terminal />

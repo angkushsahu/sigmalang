@@ -48,10 +48,8 @@ export function Testimonial() {
                             alt={testimonial.name}
                             title={testimonial.name}
                             loading="lazy"
-                            className={
-                                "-mr-4 size-16 rounded-full border-5 border-neutral-800" +
-                                (index === 1 || index === 5 ? " xs:block hidden" : "")
-                            }
+                            data-hide={[1, 5].includes(index)}
+                            className="xs:data-[hide=true]:block -mr-4 size-16 rounded-full border-5 border-neutral-800 data-[hide=true]:hidden"
                         />
                     ))}
                 </div>

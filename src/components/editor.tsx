@@ -8,14 +8,14 @@ import { useEffect, useRef, useState } from "react";
 import { PlayIcon, SigmaIcon } from "lucide-react";
 
 import { oneDark, SigmaLangEditorSupport } from "../editor";
-import { useOutputContext } from "../context";
+import { useAppContext } from "../context";
 
 const INITIAL_STATE = `aura abc = 10;
 yap abc;`;
 
 export default function Editor() {
     const editorRef = useRef<HTMLDivElement>(null);
-    const { runCode } = useOutputContext();
+    const { runCode } = useAppContext();
     const [content, setContent] = useState(INITIAL_STATE);
 
     useEffect(function () {
@@ -39,11 +39,7 @@ export default function Editor() {
                             key: "Mod-Shift-Enter",
                             run(view) {
                                 const content = view.state.doc.toString();
-                                runCode(content);
-                                document
-                                    .getElementById("terminal")
-                                    ?.scrollIntoView({ behavior: "smooth" });
-
+                                runAndScrollToTerminal(content);
                                 return true;
                             }
                         }
@@ -66,7 +62,7 @@ export default function Editor() {
         };
     }, []);
 
-    function runAndScrollToTerminal() {
+    function runAndScrollToTerminal(content: string) {
         runCode(content);
         document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" });
     }
@@ -86,7 +82,7 @@ export default function Editor() {
                 {content.length >= 1 ? (
                     <button
                         type="button"
-                        onClick={runAndScrollToTerminal}
+                        onClick={() => runAndScrollToTerminal(content)}
                         className="absolute top-4 right-4 z-10 flex size-8 cursor-pointer items-center justify-center rounded-md bg-neutral-600/95 shadow-md"
                         title="Run Code"
                     >

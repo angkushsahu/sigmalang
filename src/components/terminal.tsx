@@ -1,9 +1,9 @@
 import { ChevronRightIcon, EraserIcon, TerminalIcon } from "lucide-react";
 
-import { useOutputContext } from "../context";
+import { useAppContext } from "../context";
 
 export function Terminal() {
-    const { clearOutput, output } = useOutputContext();
+    const { clearOutput, output } = useAppContext();
 
     return (
         <div className="rounded-xl bg-neutral-900 shadow-xl ring ring-neutral-700">
@@ -40,7 +40,8 @@ export function Terminal() {
                         >
                             <ChevronRightIcon className="mt-2 inline-block size-4 shrink-0 stroke-neutral-500" />
                             <div
-                                className={`w-full px-2 py-1 ${line.type === "stderr" ? "rounded-md bg-red-500/15 text-sm ring ring-red-900" : "text-base"}`}
+                                data-error={line.type === "stderr"}
+                                className="w-full px-2 py-1 data-[error=false]:text-base data-[error=true]:rounded-md data-[error=true]:bg-red-500/15 data-[error=true]:text-sm data-[error=true]:ring data-[error=true]:ring-red-900"
                             >
                                 {line.text}
                             </div>
