@@ -13,9 +13,20 @@ import { useAppContext } from "../context";
 const INITIAL_STATE = 'yap "Hello, world!";';
 
 export default function Editor() {
-    const editorRef = useRef<HTMLDivElement>(null);
-    const { runCode } = useAppContext();
     const [content, setContent] = useState(INITIAL_STATE);
+
+    const { runCode } = useAppContext();
+
+    const editorRef = useRef<HTMLDivElement>(null);
+    const runCodeRef = useRef(runCode);
+
+    // Simply calling `runCode` was producing state change errors
+    useEffect(
+        function () {
+            runCodeRef.current = runCode;
+        },
+        [runCode]
+    );
 
     useEffect(function () {
         if (!editorRef.current) {
@@ -62,7 +73,7 @@ export default function Editor() {
     }, []);
 
     function runAndScrollToTerminal(content: string) {
-        runCode(content);
+        runCodeRef.current(content);
         document.getElementById("terminal")?.scrollIntoView({ behavior: "smooth" });
     }
 

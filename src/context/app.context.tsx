@@ -1,5 +1,7 @@
 import { createContext, useContext, type PropsWithChildren, useRef, useState } from "react";
+
 import { run, RuntimeOutput, type OutputEntry } from "../interpreter";
+import { generateToast } from "../utils";
 
 type Rank =
     "NPC" | "Beta" | "Tutorial Survivor" | "Bug Farmer" | "Aura Collector" | "Sigma" | "Giga Chad";
@@ -23,6 +25,8 @@ export function AppProvider({ children }: PropsWithChildren) {
     const [streak, setStreak] = useState(0);
 
     const outputRef = useRef(new RuntimeOutput());
+    const moreNegativeToasts = useRef(true);
+    const morePositiveToasts = useRef(true);
 
     function findRank(): RankDetails {
         if (aura < 0) {
@@ -86,8 +90,14 @@ export function AppProvider({ children }: PropsWithChildren) {
         const failed = entries.some((entry) => entry.type === "stderr");
         if (failed) {
             setStreak(0);
+
             setAura((previousAura) => {
                 if (previousAura - 2 <= -100) {
+                    if (moreNegativeToasts.current) {
+                        moreNegativeToasts.current = false;
+                        generateToast("Aura debt so high, the aura meter gave up. 🤡", "error");
+                    }
+
                     return -100;
                 }
                 return previousAura - 2;
@@ -98,17 +108,29 @@ export function AppProvider({ children }: PropsWithChildren) {
             let bonus = 0;
 
             // bonus calculations
-            if (newStreak >= 0 && newStreak % 10 === 0) {
+            if (newStreak >= 0 && newStreak % 10 === 0 && morePositiveToasts.current) {
                 bonus = 10;
-            } else if (newStreak >= 0 && newStreak % 5 === 0) {
+                generateToast("Errorless behavior detected, +10 bonus. Big W. ⚡", "success");
+            } else if (newStreak >= 0 && newStreak % 5 === 0 && morePositiveToasts.current) {
                 bonus = 5;
+                generateToast("Errorless behavior detected, +5 bonus. Big W. ⚡", "success");
             }
 
             auraGain += bonus;
+
             setAura((previousAura) => {
                 if (previousAura + auraGain >= 100) {
+                    if (morePositiveToasts.current) {
+                        morePositiveToasts.current = false;
+                        generateToast(
+                            "Maximum aura reached, the compiler bows in respect. 👑",
+                            "success"
+                        );
+                    }
+
                     return 100;
                 }
+
                 return previousAura + auraGain;
             });
 
