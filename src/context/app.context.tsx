@@ -100,6 +100,8 @@ export function AppProvider({ children }: PropsWithChildren) {
 
                     return -100;
                 }
+
+                moreNegativeToasts.current = true;
                 return previousAura - 2;
             });
         } else {
@@ -131,6 +133,7 @@ export function AppProvider({ children }: PropsWithChildren) {
                     return 100;
                 }
 
+                morePositiveToasts.current = true;
                 return previousAura + auraGain;
             });
 
